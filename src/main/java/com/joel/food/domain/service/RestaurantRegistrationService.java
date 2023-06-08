@@ -26,4 +26,5 @@ public class RestaurantRegistrationService {
         restaurant.setKitchen(kitchen);
         return restaurantRepository.add(restaurant);
     }
+
 }

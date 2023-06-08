@@ -7,6 +7,7 @@ import com.joel.food.domain.repository.KitchenRepository;
 import com.joel.food.domain.repository.RestaurantRepository;
 import com.joel.food.domain.service.RestaurantRegistrationService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -39,12 +40,29 @@ public class RestaurantController {
     }
 
     @PostMapping
-    public ResponseEntity<?>  save(@RequestBody Restaurant restaurant) {
+    public ResponseEntity<?> save(@RequestBody Restaurant restaurant) {
         try {
             restaurant = restaurantService.save(restaurant);
             return ResponseEntity.status(HttpStatus.CREATED).body(restaurant);
         } catch (EntityNotExistsException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
+    }
+
+    @PutMapping("/{restaurantId}")
+    public ResponseEntity<?> update(@PathVariable Long restaurantId, @RequestBody Restaurant restaurant) {
+        try {
+            Restaurant currentRestaurant = restaurantRepository.findById(restaurantId);
+
+            if (currentRestaurant != null) {
+                BeanUtils.copyProperties(restaurant, currentRestaurant, "id");
+                currentRestaurant = restaurantService.save(currentRestaurant);
+                return ResponseEntity.ok(currentRestaurant);
+            }
+            return ResponseEntity.notFound().build();
+        } catch (EntityNotExistsException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+
     }
 }
