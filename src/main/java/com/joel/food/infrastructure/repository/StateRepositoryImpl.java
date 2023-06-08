@@ -2,6 +2,7 @@ package com.joel.food.infrastructure.repository;
 
 import com.joel.food.domain.model.State;
 import com.joel.food.domain.repository.StateRepository;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,8 +35,12 @@ public class StateRepositoryImpl implements StateRepository {
 
     @Transactional
     @Override
-    public void remove(State state) {
-        state = find(state.getId());
+    public void remove(Long id) {
+        State state = find(id);
+
+        if (state == null) {
+            throw new EmptyResultDataAccessException(1);
+        }
         manager.remove(state);
     }
 }
