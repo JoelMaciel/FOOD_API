@@ -8,6 +8,8 @@ import com.joel.food.domain.repository.RestaurantRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class RestaurantRegistrationService {
@@ -17,14 +19,12 @@ public class RestaurantRegistrationService {
 
     public Restaurant save(Restaurant restaurant) {
         Long kitchenId = restaurant.getKitchen().getId();
-        Kitchen kitchen = kitchenRepository.findById(kitchenId);
+        Kitchen kitchen = kitchenRepository.findById(kitchenId)
+                .orElseThrow(() -> new EntityNotExistsException(
+                        String.format("There is no kitchen record with the code %d", kitchenId)));
 
-        if (kitchen == null) {
-            throw new EntityNotExistsException(
-                    String.format("There is no kitchen record with the code %d", kitchenId));
-        }
         restaurant.setKitchen(kitchen);
-        return restaurantRepository.add(restaurant);
+        return restaurantRepository.save(restaurant);
     }
 
 }

@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @RestController
@@ -25,15 +26,15 @@ public class KitchenController {
 
     @GetMapping
     public List<Kitchen> list() {
-        return kitchenRepository.allKitchens();
+        return kitchenRepository.findAll();
     }
 
     @GetMapping("/{kitchenId}")
     public ResponseEntity<Kitchen> find(@PathVariable Long kitchenId) {
-        Kitchen kitchen = kitchenRepository.findById(kitchenId);
+        Optional<Kitchen> kitchen = kitchenRepository.findById(kitchenId);
 
-        if (kitchen != null) {
-            return ResponseEntity.ok(kitchen);
+        if (kitchen.isPresent()) {
+            return ResponseEntity.ok(kitchen.get());
         }
         return ResponseEntity.notFound().build();
     }
@@ -46,12 +47,11 @@ public class KitchenController {
 
     @PutMapping("/{kitchenId}")
     public ResponseEntity<Kitchen> update(@PathVariable Long kitchenId, @RequestBody Kitchen kitchen) {
-        Kitchen currentKitchen = kitchenRepository.findById(kitchenId);
+        Optional<Kitchen> currentKitchen = kitchenRepository.findById(kitchenId);
 
-        if (currentKitchen != null) {
-            BeanUtils.copyProperties(kitchen, currentKitchen, "id");
-            kitchenService.save(currentKitchen);
-            return ResponseEntity.ok(currentKitchen);
+        if (currentKitchen.isPresent()) {
+            BeanUtils.copyProperties(kitchen, currentKitchen.get(), "id");
+            return ResponseEntity.ok(kitchenService.save(currentKitchen.get()));
         }
         return ResponseEntity.notFound().build();
     }

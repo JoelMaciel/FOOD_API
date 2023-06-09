@@ -1,14 +1,12 @@
 package com.joel.food.domain.repository;
 
-import java.util.List;
-
 import com.joel.food.domain.model.Kitchen;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface KitchenRepository {
-	
-	List<Kitchen> allKitchens();
-	Kitchen findById(Long id);
-	Kitchen save(Kitchen kitchen);
-	void remove(Long id);
+@Repository
+public interface KitchenRepository extends JpaRepository<Kitchen, Long> {
+
+	//List<Kitchen> findByName(String name);
 
 }

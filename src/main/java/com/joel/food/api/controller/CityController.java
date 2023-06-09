@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,15 +24,15 @@ public class CityController {
 
     @GetMapping
     public List<City> list() {
-        return cityRepository.list();
+        return cityRepository.findAll();
     }
 
     @GetMapping("/{cityId}")
     public ResponseEntity<City> findById(@PathVariable Long cityId) {
-        City city = cityRepository.find(cityId);
+        Optional<City> city = cityRepository.findById(cityId);
 
-        if (city != null) {
-            return ResponseEntity.ok(city);
+        if (city.isPresent()) {
+            return ResponseEntity.ok(city.get());
         }
         return ResponseEntity.notFound().build();
     }
@@ -49,7 +50,8 @@ public class CityController {
     @PutMapping("/{cityId}")
     public ResponseEntity<?> update(@PathVariable Long cityId, @RequestBody City city) {
         try {
-            City currentCity = cityRepository.find(cityId);
+            City currentCity = cityRepository.findById(cityId).orElseThrow(() -> new EntityNotExistsException(
+                    String.format("There is no record of state with code %d", cityId)));
 
             if (currentCity != null) {
                 BeanUtils.copyProperties(city, currentCity, "id");
@@ -57,7 +59,7 @@ public class CityController {
                 return ResponseEntity.ok(currentCity);
             }
             return ResponseEntity.notFound().build();
-        }catch (EntityNotExistsException e) {
+        } catch (EntityNotExistsException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
 
@@ -66,7 +68,7 @@ public class CityController {
     @DeleteMapping("/{cityId}")
     public ResponseEntity<City> remove(@PathVariable Long cityId) {
         try {
-            cityRepository.remove(cityId);
+            cityService.remove(cityId);
             return ResponseEntity.noContent().build();
         } catch (EntityNotExistsException e) {
             return ResponseEntity.notFound().build();
