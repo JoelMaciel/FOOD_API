@@ -22,3 +22,5 @@ insert into form_payment (id, description) values  (3, 'Money');
 
 insert into permission (id, name, description) values (1, 'CONSULT_KITCHENS', 'Allows consulting kitchens');
 insert into permission (id, name, description) values (2, 'EDIT_KITCHENS', 'Allows editing kitchens');
+
+insert into restaurant_form_payment (restaurant_Id, form_payment_id) values (1, 1), (1, 2), (1, 3), (2, 3), (3, 2), (3, 3);
