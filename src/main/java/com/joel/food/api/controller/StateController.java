@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,32 +24,32 @@ public class StateController {
 
     @GetMapping
     public List<State> allStates() {
-        return stateRepository.list();
+        return stateRepository.findAll();
     }
 
     @GetMapping("/{stateId}")
     public ResponseEntity<State> findById(@PathVariable Long stateId) {
-        State state = stateRepository.find(stateId);
+        Optional<State> state = stateRepository.findById(stateId);
 
-        if (state != null) {
-            return ResponseEntity.ok(state);
+        if (state.isPresent()) {
+            return ResponseEntity.ok(state.get());
         }
         return ResponseEntity.notFound().build();
     }
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public State save(@RequestBody State state) {
         return stateService.save(state);
     }
 
     @PutMapping("/{stateId}")
     public ResponseEntity<State> update(@PathVariable Long stateId, @RequestBody State state) {
-        State currentState = stateRepository.find(stateId);
+        State currentState = stateRepository.findById(stateId).orElse(null);
 
         if (currentState != null) {
             BeanUtils.copyProperties(state, currentState, "id");
-            stateService.save(currentState);
-            return ResponseEntity.ok(currentState);
+            return ResponseEntity.ok(stateService.save(currentState));
         }
         return ResponseEntity.notFound().build();
     }
