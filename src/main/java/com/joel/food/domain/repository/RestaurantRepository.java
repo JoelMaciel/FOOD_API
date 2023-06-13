@@ -1,6 +1,5 @@
 package com.joel.food.domain.repository;
 
-import com.joel.food.domain.model.Kitchen;
 import com.joel.food.domain.model.Restaurant;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -14,12 +13,13 @@ import java.util.Optional;
 @Repository
 public interface RestaurantRepository extends JpaRepository<Restaurant, Long> {
 
+    @Query("from Restaurant r join r.kitchen  left join fetch r.formPayments")
+    List<Restaurant> findAll();
+
     List<Restaurant> findByFreightRateBetween(BigDecimal rateInitial, BigDecimal rateFinal);
 
     @Query("from Restaurant where name like %:name% and kitchen.id = :id")
     List<Restaurant> searchByName(String name, @Param("id") Long kitcheId);
-
-//    List<Restaurant> findByNameContainingAndKitchenId(String name, Long kitcheId);
 
     Optional<Restaurant> findFirstRestaurantByNameContaining(String name);
 
