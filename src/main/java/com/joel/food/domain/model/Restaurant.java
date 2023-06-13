@@ -1,6 +1,7 @@
 package com.joel.food.domain.model;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,6 +10,8 @@ import javax.persistence.*;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 
 @Data
@@ -34,6 +37,20 @@ public class Restaurant {
 	@JsonIgnore
 	@Embedded
 	private Address address;
+
+	@JsonIgnore
+	@CreationTimestamp
+	@Column(nullable = false, columnDefinition = "datetime")
+	private LocalDateTime creationDate;
+
+	@JsonIgnore
+	@UpdateTimestamp
+	@Column(nullable = false, columnDefinition = "datetime")
+	private LocalDateTime updateDate;
+
+	@JsonIgnore
+	@OneToMany(mappedBy = "restaurant")
+	private List<Product> products = new ArrayList<>();
 
 	@JsonIgnore
 	@ManyToMany

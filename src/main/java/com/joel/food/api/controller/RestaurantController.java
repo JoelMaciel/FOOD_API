@@ -53,7 +53,8 @@ public class RestaurantController {
                     .orElse(null);
 
             if (currentRestaurant != null) {
-                BeanUtils.copyProperties(restaurant, currentRestaurant, "id", "formPayments", "address");
+                BeanUtils.copyProperties(restaurant, currentRestaurant,
+                        "id", "formPayments", "address", "creationDate", "products");
 
                 currentRestaurant = restaurantService.save(currentRestaurant);
                 return ResponseEntity.ok(currentRestaurant);
