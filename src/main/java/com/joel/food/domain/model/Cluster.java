@@ -10,7 +10,7 @@ import java.util.List;
 @Data
 @Entity
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Groups {
+public class Cluster {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,8 +21,8 @@ public class Groups {
     private String name;
 
     @ManyToMany
-    @JoinTable(name = "groups_permission",
-            joinColumns = @JoinColumn(name = "groups_id"),
+    @JoinTable(name = "cluster_permission",
+            joinColumns = @JoinColumn(name = "cluster_id"),
             inverseJoinColumns = @JoinColumn(name = "permission_id"))
     private List<Permission> permissions = new ArrayList<>();
 }
