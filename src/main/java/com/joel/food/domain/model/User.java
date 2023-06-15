@@ -12,7 +12,7 @@ import java.util.List;
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
-public class Users {
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,10 +33,10 @@ public class Users {
     private LocalDateTime creationDate;
 
     @ManyToMany
-    @JoinTable(name = "users_groups",
-    joinColumns = @JoinColumn(name = "users_id"),
-    inverseJoinColumns = @JoinColumn(name = "groups_id"))
-    private List<Groups> groups = new ArrayList<>();
+    @JoinTable(name = "user_cluster",
+    joinColumns = @JoinColumn(name = "user_id"),
+    inverseJoinColumns = @JoinColumn(name = "cluster_id"))
+    private List<Cluster> clusters = new ArrayList<>();
 }
 
 

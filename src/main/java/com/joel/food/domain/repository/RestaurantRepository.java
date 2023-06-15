@@ -13,7 +13,7 @@ import java.util.Optional;
 @Repository
 public interface RestaurantRepository extends JpaRepository<Restaurant, Long> {
 
-    @Query("from Restaurant r join r.kitchen  left join fetch r.formPayments")
+    @Query("from Restaurant r join fetch r.kitchen")
     List<Restaurant> findAll();
 
     List<Restaurant> findByFreightRateBetween(BigDecimal rateInitial, BigDecimal rateFinal);
