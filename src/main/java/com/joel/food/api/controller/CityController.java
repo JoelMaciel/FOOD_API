@@ -1,6 +1,8 @@
 package com.joel.food.api.controller;
 
+import com.joel.food.domain.exception.BusinessException;
 import com.joel.food.domain.exception.EntityNotExistsException;
+import com.joel.food.domain.exception.StateNotFoundException;
 import com.joel.food.domain.model.City;
 import com.joel.food.domain.repository.CityRepository;
 import com.joel.food.domain.service.CityRegistrationService;
@@ -33,7 +35,11 @@ public class CityController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public City add(@RequestBody City city) {
-        return cityService.save(city);
+        try {
+            return cityService.save(city);
+        } catch (StateNotFoundException e) {
+            throw new BusinessException(e.getMessage(), e);
+        }
     }
 
     @PutMapping("/{cityId}")
@@ -41,7 +47,11 @@ public class CityController {
         City currentCity = cityService.searchById(cityId);
 
         BeanUtils.copyProperties(city, currentCity, "id");
-        return cityService.save(currentCity);
+        try {
+            return cityService.save(currentCity);
+        } catch (StateNotFoundException e) {
+            throw new BusinessException(e.getMessage(), e);
+        }
     }
 
     @DeleteMapping("/{cityId}")

@@ -1,5 +1,7 @@
 package com.joel.food.api.controller;
 
+import com.joel.food.domain.exception.BusinessException;
+import com.joel.food.domain.exception.EntityNotExistsException;
 import com.joel.food.domain.model.Restaurant;
 import com.joel.food.domain.repository.RestaurantRepository;
 import com.joel.food.domain.service.RestaurantRegistrationService;
@@ -32,7 +34,12 @@ public class RestaurantController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Restaurant save(@RequestBody Restaurant restaurant) {
-        return restaurantService.save(restaurant);
+        try {
+            return restaurantService.save(restaurant);
+        } catch (EntityNotExistsException e) {
+            throw new BusinessException(e.getMessage());
+        }
+
     }
 
     @PutMapping("/{restaurantId}")
@@ -41,7 +48,11 @@ public class RestaurantController {
 
         BeanUtils.copyProperties(restaurant, currentRestaurant,
                 "id", "formPayments", "address", "creationDate", "products");
+        try {
+            return restaurantService.save(currentRestaurant);
+        } catch (EntityNotExistsException e) {
+            throw new BusinessException(e.getMessage());
+        }
 
-        return restaurantService.save(currentRestaurant);
     }
 }

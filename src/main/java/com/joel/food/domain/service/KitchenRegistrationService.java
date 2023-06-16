@@ -1,7 +1,6 @@
 package com.joel.food.domain.service;
 
-import com.joel.food.domain.exception.EntityInUseException;
-import com.joel.food.domain.exception.EntityNotExistsException;
+import com.joel.food.domain.exception.KitchenNotFoundException;
 import com.joel.food.domain.model.Kitchen;
 import com.joel.food.domain.repository.KitchenRepository;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +12,6 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class KitchenRegistrationService {
 
-    public static final String MSG_KITCHEN_NOT_FOUND = "There is no kitchen record with the code %d";
     public static final String MSG_KITCHEN_IN_USE = "Kitchen code %d cannot be removed as it is in use";
     private final KitchenRepository kitchenRepository;
 
@@ -25,16 +23,14 @@ public class KitchenRegistrationService {
         try {
             kitchenRepository.deleteById(kitchenId);
         } catch (EmptyResultDataAccessException e) {
-            throw new EntityNotExistsException(
-                    String.format(MSG_KITCHEN_NOT_FOUND, kitchenId));
+            throw new KitchenNotFoundException(kitchenId);
         } catch (DataIntegrityViolationException e) {
-            throw new EntityInUseException(String.format(MSG_KITCHEN_IN_USE, kitchenId));
+            throw new KitchenNotFoundException(String.format(MSG_KITCHEN_IN_USE, kitchenId));
         }
     }
 
     public Kitchen searchById(Long kitchenId) {
         return kitchenRepository.findById(kitchenId)
-                .orElseThrow(() -> new EntityNotExistsException(
-                        String.format(MSG_KITCHEN_NOT_FOUND, kitchenId)));
+                .orElseThrow(() -> new KitchenNotFoundException(kitchenId));
     }
 }

@@ -1,7 +1,7 @@
 package com.joel.food.domain.service;
 
+import com.joel.food.domain.exception.CityNotFoundException;
 import com.joel.food.domain.exception.EntityInUseException;
-import com.joel.food.domain.exception.EntityNotExistsException;
 import com.joel.food.domain.model.City;
 import com.joel.food.domain.model.State;
 import com.joel.food.domain.repository.CityRepository;
@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class CityRegistrationService {
 
-    public static final String MSG_CITY_NOT_FOUND = "There is no record of city with code %d";
     public static final String MSG_CITY_IN_USE = "City code %d cannot be removed as it is in use";
     private final CityRepository cityRepository;
     private final StateRegistrationService stateService;
@@ -30,8 +29,7 @@ public class CityRegistrationService {
         try {
             cityRepository.deleteById(cityId);
         } catch (EmptyResultDataAccessException e) {
-            throw new EntityNotExistsException(
-                    String.format(MSG_CITY_NOT_FOUND, cityId));
+            throw new CityNotFoundException(cityId);
         } catch (DataIntegrityViolationException e) {
             throw new EntityInUseException(
                     String.format(MSG_CITY_IN_USE, cityId));
@@ -40,6 +38,6 @@ public class CityRegistrationService {
 
     public City searchById(Long cityId) {
         return cityRepository.findById(cityId).orElseThrow(
-                () -> new EntityNotExistsException(String.format(MSG_CITY_NOT_FOUND, cityId)));
+                () -> new CityNotFoundException(cityId));
     }
 }
