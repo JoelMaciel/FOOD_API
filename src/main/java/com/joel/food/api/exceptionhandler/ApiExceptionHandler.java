@@ -3,51 +3,60 @@ package com.joel.food.api.exceptionhandler;
 import com.joel.food.domain.exception.BusinessException;
 import com.joel.food.domain.exception.EntityInUseException;
 import com.joel.food.domain.exception.EntityNotExistsException;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.time.LocalDateTime;
 
 @ControllerAdvice
-public class ApiExceptionHandler {
+public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(EntityNotExistsException.class)
-    public ResponseEntity<?> handleEntityNotFound(EntityNotExistsException e) {
-        Problem problem = Problem.builder()
-                .dateTime(LocalDateTime.now())
-                .message((e.getMessage())).build();
+    public ResponseEntity<?> handleEntityNotFound(EntityNotExistsException ex, WebRequest request) {
 
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(problem);
+        return handleExceptionInternal(ex, ex.getMessage(), new HttpHeaders(), HttpStatus.NOT_FOUND, request);
     }
 
     @ExceptionHandler(EntityInUseException.class)
-    public ResponseEntity<?> handleEntityInUse(EntityInUseException e) {
-        Problem problem = Problem.builder()
-                .dateTime(LocalDateTime.now())
-                .message(e.getMessage())
-                .build();
+    public ResponseEntity<?> handleEntityInUse(EntityInUseException ex, WebRequest request) {
 
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(problem);
+        return handleExceptionInternal(ex, ex.getMessage(), new HttpHeaders(), HttpStatus.CONFLICT, request);
     }
 
     @ExceptionHandler(BusinessException.class)
-    public ResponseEntity<?> handleBusiness(BusinessException e) {
-        Problem problem = Problem.builder()
-                .dateTime(LocalDateTime.now())
-                .message(e.getMessage()).build();
+    public ResponseEntity<?> handleBusiness(BusinessException ex, WebRequest request) {
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(problem);
+        return handleExceptionInternal(ex, ex.getMessage(), new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+
     }
 
-    @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
-    public ResponseEntity<?> handleHttpMediaTypeNotSupported() {
-        Problem problem = Problem.builder()
-                .dateTime(LocalDateTime.now())
-                .message("The media type is not supported").build();
+    @Override
+    protected ResponseEntity<Object> handleExceptionInternal(Exception ex, Object body,
+                          HttpHeaders headers, HttpStatus status, WebRequest request) {
+        if (body == null) {
+            body = Problem.builder()
+                    .dateTime(LocalDateTime.now())
+                    .message(status.getReasonPhrase())
+                    .build();
+        } else if (body instanceof String) {
+            body = Problem.builder()
+                    .dateTime(LocalDateTime.now())
+                    .message((String) body)
+                    .build();
+        }
 
-        return ResponseEntity.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE).body(problem);
+        return super.handleExceptionInternal(ex, body, headers, status, request);
     }
 }
+
+
+
+
+
+
+
