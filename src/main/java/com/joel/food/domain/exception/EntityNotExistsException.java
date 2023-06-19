@@ -1,6 +1,6 @@
 package com.joel.food.domain.exception;
 
-public class EntityNotExistsException extends RuntimeException {
+public abstract class EntityNotExistsException extends BusinessException {
 
     public EntityNotExistsException(String message) {
         super(message);
