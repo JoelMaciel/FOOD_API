@@ -1,13 +1,19 @@
 package com.joel.food.domain.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.joel.food.Groups;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PositiveOrZero;
+import javax.validation.groups.ConvertGroup;
+import javax.validation.groups.Default;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -24,13 +30,17 @@ public class Restaurant {
 	@Id
 	private Long id;
 
-	@NotNull
+	@NotBlank
 	@Column(nullable = false)
 	private String name;
-	
+
+	@PositiveOrZero
 	@Column(name = "freight_rate", nullable = false)
 	private BigDecimal freightRate;
 
+	@Valid
+	@ConvertGroup(from = Default.class, to = Groups.KitchenId.class)
+	@NotNull
 	@ManyToOne
 	@JoinColumn(name = "kitchen_id", nullable = false)
 	private Kitchen kitchen;
