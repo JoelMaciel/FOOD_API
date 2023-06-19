@@ -1,6 +1,6 @@
 package com.joel.food.domain.model;
 
-import com.joel.food.Groups;
+import com.joel.food.core.validation.Groups;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

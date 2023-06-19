@@ -1,6 +1,5 @@
 package com.joel.food.api.controller;
 
-import com.joel.food.Groups;
 import com.joel.food.domain.exception.BusinessException;
 import com.joel.food.domain.exception.EntityNotExistsException;
 import com.joel.food.domain.model.Restaurant;
@@ -9,7 +8,6 @@ import com.joel.food.domain.service.RestaurantRegistrationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;

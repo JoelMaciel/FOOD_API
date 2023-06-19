@@ -1,7 +1,7 @@
 package com.joel.food.domain.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.joel.food.Groups;
+import com.joel.food.core.validation.Groups;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.CreationTimestamp;
