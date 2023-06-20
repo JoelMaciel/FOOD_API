@@ -85,6 +85,5 @@ class RegistrationKitchenIntegrationE2EIT {
         Kitchen kitchen2 = new Kitchen();
         kitchen2.setName("American");
         kitchenRepository.save(kitchen2);
-
     }
 }
