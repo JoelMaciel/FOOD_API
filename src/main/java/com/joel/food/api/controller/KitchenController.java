@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -32,12 +33,12 @@ public class KitchenController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Kitchen add(@RequestBody Kitchen kitchen) {
+    public Kitchen add(@RequestBody @Valid Kitchen kitchen) {
         return kitchenService.save(kitchen);
     }
 
     @PutMapping("/{kitchenId}")
-    public Kitchen update(@PathVariable Long kitchenId, @RequestBody Kitchen kitchen) {
+    public Kitchen update(@PathVariable Long kitchenId, @RequestBody @Valid Kitchen kitchen) {
         var currentKitchen = kitchenService.searchById(kitchenId);
 
         BeanUtils.copyProperties(kitchen, currentKitchen, "id");

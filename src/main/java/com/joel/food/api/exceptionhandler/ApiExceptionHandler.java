@@ -6,12 +6,17 @@ import com.fasterxml.jackson.databind.exc.PropertyBindingException;
 import com.joel.food.domain.exception.BusinessException;
 import com.joel.food.domain.exception.EntityInUseException;
 import com.joel.food.domain.exception.EntityNotExistsException;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.TypeMismatchException;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
@@ -23,11 +28,14 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@RequiredArgsConstructor
 @ControllerAdvice
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
     public static final String MSG_GENERIC_ERROR_END_USER = "An unexpected internal system error has occurred."
             + "Try again and if the problem persists, contact us with the system administrator.";
+
+    private final MessageSource messageSource;
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> handleUncaught(Exception ex, WebRequest request) {
@@ -69,6 +77,33 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                 .build();
 
         return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
+    }
+
+    @Override
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
+                                          HttpHeaders headers, HttpStatus status, WebRequest request) {
+
+        ProblemType problemType = ProblemType.INVALID_DATA;
+        String detail = "One or more fields are invalid. Fill in the correct form and try again.";
+
+        BindingResult bindingResult = ex.getBindingResult();
+
+        List<Problem.Object> problemObjects = bindingResult.getFieldErrors().stream()
+                .map(fieldError ->  {
+                    String message = messageSource.getMessage(fieldError, LocaleContextHolder.getLocale());
+                 return    Problem.Object.builder()
+                            .name(fieldError.getField())
+                            .userMessage(message)
+                            .build();
+                })
+                .collect(Collectors.toList());
+
+        Problem problem = createProblemBuilder(status, problemType , detail)
+                .userMessage(detail)
+                .objects(problemObjects)
+                .build();
+
+        return handleExceptionInternal(ex, problem, headers, status, request);
     }
 
     @ExceptionHandler(BusinessException.class)

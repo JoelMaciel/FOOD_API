@@ -10,6 +10,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -33,7 +34,7 @@ public class RestaurantController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Restaurant save(@RequestBody Restaurant restaurant) {
+    public Restaurant save(@RequestBody @Valid Restaurant restaurant) {
         try {
             return restaurantService.save(restaurant);
         } catch (EntityNotExistsException e) {
@@ -43,7 +44,7 @@ public class RestaurantController {
     }
 
     @PutMapping("/{restaurantId}")
-    public Restaurant update(@PathVariable Long restaurantId, @RequestBody Restaurant restaurant) {
+    public Restaurant update(@PathVariable Long restaurantId, @RequestBody @Valid Restaurant restaurant) {
         Restaurant currentRestaurant = restaurantService.searchById(restaurantId);
 
         BeanUtils.copyProperties(restaurant, currentRestaurant,
