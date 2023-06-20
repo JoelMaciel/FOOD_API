@@ -15,7 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 
 @SpringBootTest
-class RegistrationKitchenIntegrationTests {
+class RegistrationKitchenIntegrationIT {
 
     @Autowired
     private KitchenRegistrationService kitchenService;
