@@ -14,8 +14,7 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.test.context.TestPropertySource;
 
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.hasItems;
-import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.*;
 
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -75,6 +74,29 @@ class RegistrationKitchenIntegrationE2EIT {
                 .then()
                 .statusCode(HttpStatus.SC_CREATED);
 
+    }
+
+    @Test
+    public void mustReturnCorrectAnswerAndStatus_WhenQueryKitchen() {
+        given()
+                .pathParams("kitchenId", 2)
+                .accept(ContentType.JSON)
+                .when()
+                .get("/{kitchenId}")
+                .then()
+                .statusCode(HttpStatus.SC_OK)
+                .body("name", equalTo("American"));
+    }
+
+    @Test
+    public void mustReturnStatus404Correct_WhenQueryNonexistentKitchen() {
+        given()
+                .pathParams("kitchenId", 100)
+                .accept(ContentType.JSON)
+                .when()
+                .get("/{kitchenId}")
+                .then()
+                .statusCode(HttpStatus.SC_NOT_FOUND);
     }
 
     private void prepareData() {
