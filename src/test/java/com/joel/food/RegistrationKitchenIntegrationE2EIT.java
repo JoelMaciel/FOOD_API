@@ -3,6 +3,7 @@ package com.joel.food;
 import com.joel.food.domain.model.Kitchen;
 import com.joel.food.domain.repository.KitchenRepository;
 import com.joel.food.util.DatabaseCleaner;
+import com.joel.food.util.ResourceUtils;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.apache.http.HttpStatus;
@@ -24,6 +25,12 @@ class RegistrationKitchenIntegrationE2EIT {
     @LocalServerPort
     private int port;
 
+    private static final int KITCHEN_ID_NOT_EXISTENT = 100;
+
+    private Kitchen americanKitchen;
+    private int quantityKitchensRegistered;
+    private String jsonCorrectChineseKitchen;
+
     @Autowired
     private DatabaseCleaner databaseCleaner;
 
@@ -35,6 +42,10 @@ class RegistrationKitchenIntegrationE2EIT {
         RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
         RestAssured.port = port;
         RestAssured.basePath = "/kitchens";
+
+        jsonCorrectChineseKitchen = ResourceUtils.getContentFromResource(
+                "/json/correct/chinese-kitchen.json"
+        );
 
         databaseCleaner.clearTables();
         prepareData();
@@ -53,20 +64,19 @@ class RegistrationKitchenIntegrationE2EIT {
     }
 
     @Test
-    public void mustContain2Kitchens_WhenConsultKitchen() {
+    public void shouldReturnCorrectQuantityOfKitchens_WhenConsultingKitchens() {
                 given()
                      .accept(ContentType.JSON)
                 .when()
                      .get()
                 .then()
-                      .body("", hasSize(2))
-                      .body("name", hasItems("Thai", "American"));
+                      .body("", hasSize(quantityKitchensRegistered));
     }
 
     @Test
     public void mustReturnStatus201_WhenRegisteringKitchen() {
         given()
-                .body("{ \"name\": \"Chinese\" }")
+                .body(jsonCorrectChineseKitchen)
                 .contentType(ContentType.JSON)
                 .accept(ContentType.JSON)
                 .when()
@@ -79,19 +89,19 @@ class RegistrationKitchenIntegrationE2EIT {
     @Test
     public void mustReturnCorrectAnswerAndStatus_WhenQueryKitchen() {
         given()
-                .pathParams("kitchenId", 2)
+                .pathParams("kitchenId", americanKitchen.getId())
                 .accept(ContentType.JSON)
                 .when()
                 .get("/{kitchenId}")
                 .then()
                 .statusCode(HttpStatus.SC_OK)
-                .body("name", equalTo("American"));
+                .body("name", equalTo(americanKitchen.getName()));
     }
 
     @Test
     public void mustReturnStatus404Correct_WhenQueryNonexistentKitchen() {
         given()
-                .pathParams("kitchenId", 100)
+                .pathParams("kitchenId", KITCHEN_ID_NOT_EXISTENT)
                 .accept(ContentType.JSON)
                 .when()
                 .get("/{kitchenId}")
@@ -100,12 +110,14 @@ class RegistrationKitchenIntegrationE2EIT {
     }
 
     private void prepareData() {
-        Kitchen kitchen1 = new Kitchen();
-        kitchen1.setName("Thai");
-        kitchenRepository.save(kitchen1);
+        Kitchen kitchenThai = new Kitchen();
+        kitchenThai.setName("Thai");
+        kitchenRepository.save(kitchenThai);
 
-        Kitchen kitchen2 = new Kitchen();
-        kitchen2.setName("American");
-        kitchenRepository.save(kitchen2);
+        americanKitchen = new Kitchen();
+        americanKitchen.setName("American");
+        kitchenRepository.save(americanKitchen);
+
+        quantityKitchensRegistered = (int) kitchenRepository.count();
     }
 }
