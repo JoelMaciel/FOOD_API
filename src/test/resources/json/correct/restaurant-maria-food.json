@@ -1,0 +1,7 @@
+{
+  "name": "Aunt Maria's food",
+  "freightRate": 12,
+  "kitchen": {
+    "id": 2
+  }
+}

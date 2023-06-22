@@ -1,5 +1,6 @@
 package com.joel.food.domain.service;
 
+import com.joel.food.domain.exception.EntityInUseException;
 import com.joel.food.domain.exception.KitchenNotFoundException;
 import com.joel.food.domain.model.Kitchen;
 import com.joel.food.domain.repository.KitchenRepository;
@@ -25,7 +26,7 @@ public class KitchenRegistrationService {
         } catch (EmptyResultDataAccessException e) {
             throw new KitchenNotFoundException(kitchenId);
         } catch (DataIntegrityViolationException e) {
-            throw new KitchenNotFoundException(String.format(MSG_KITCHEN_IN_USE, kitchenId));
+            throw new EntityInUseException(String.format(MSG_KITCHEN_IN_USE, kitchenId));
         }
     }
 
