@@ -7,6 +7,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,9 +33,9 @@ public class Order {
     @CreationTimestamp
     private LocalDateTime creationDate;
 
-    private LocalDateTime confirmationDate;
-    private LocalDateTime cancellationDate;
-    private LocalDateTime deliveryDate;
+    private OffsetDateTime confirmationDate;
+    private OffsetDateTime cancellationDate;
+    private OffsetDateTime deliveryDate;
 
     @ManyToOne
     @JoinColumn(nullable = false)
