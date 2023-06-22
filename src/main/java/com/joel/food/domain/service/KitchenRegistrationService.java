@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -16,10 +17,12 @@ public class KitchenRegistrationService {
     public static final String MSG_KITCHEN_IN_USE = "Kitchen code %d cannot be removed as it is in use";
     private final KitchenRepository kitchenRepository;
 
+    @Transactional
     public Kitchen save(Kitchen kitchen) {
         return kitchenRepository.save(kitchen);
     }
 
+    @Transactional
     public void remove(Long kitchenId) {
         try {
             kitchenRepository.deleteById(kitchenId);
