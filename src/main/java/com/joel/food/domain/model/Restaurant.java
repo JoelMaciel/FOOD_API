@@ -1,6 +1,5 @@
 package com.joel.food.domain.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.joel.food.core.validation.Groups;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -15,7 +14,7 @@ import javax.validation.constraints.PositiveOrZero;
 import javax.validation.groups.ConvertGroup;
 import javax.validation.groups.Default;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,6 +38,7 @@ public class Restaurant {
 	@Column(name = "freight_rate", nullable = false)
 	private BigDecimal freightRate;
 
+
 	@Valid
 	@ConvertGroup(from = Default.class, to = Groups.KitchenId.class)
 	@NotNull
@@ -46,25 +46,25 @@ public class Restaurant {
 	@JoinColumn(name = "kitchen_id", nullable = false)
 	private Kitchen kitchen;
 
-	@JsonIgnore
+
 	@Embedded
 	private Address address;
 
-	@JsonIgnore
+
 	@CreationTimestamp
 	@Column(nullable = false, columnDefinition = "datetime")
-	private LocalDateTime creationDate;
+	private OffsetDateTime creationDate;
 
-	@JsonIgnore
+
 	@UpdateTimestamp
 	@Column(nullable = false, columnDefinition = "datetime")
-	private LocalDateTime updateDate;
+	private OffsetDateTime updateDate;
 
-	@JsonIgnore
+
 	@OneToMany(mappedBy = "restaurant")
 	private List<Product> products = new ArrayList<>();
 
-	@JsonIgnore
+
 	@ManyToMany
 	@JoinTable(name = "restaurant_form_payment",
 	joinColumns = @JoinColumn(name = "restaurant_Id"),
