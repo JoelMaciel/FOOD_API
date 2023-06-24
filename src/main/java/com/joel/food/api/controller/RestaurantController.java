@@ -1,12 +1,9 @@
 package com.joel.food.api.controller;
 
-import com.joel.food.domain.exception.BusinessException;
-import com.joel.food.domain.exception.EntityNotExistsException;
-import com.joel.food.domain.model.Restaurant;
-import com.joel.food.domain.repository.RestaurantRepository;
+import com.joel.food.api.model.RestaurantDTO;
+import com.joel.food.api.model.request.RestaurantRequest;
 import com.joel.food.domain.service.RestaurantRegistrationService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,42 +15,30 @@ import java.util.List;
 @RequestMapping("/restaurants")
 public class RestaurantController {
 
-    private final RestaurantRepository restaurantRepository;
     private final RestaurantRegistrationService restaurantService;
 
     @GetMapping
-    public List<Restaurant> list() {
-        return restaurantRepository.findAll();
+    public List<RestaurantDTO> listAll() {
+        return restaurantService.findAll();
     }
 
     @GetMapping("/{restaurantId}")
-    public Restaurant findById(@PathVariable Long restaurantId) {
-        return restaurantService.searchById(restaurantId);
+    public RestaurantDTO getOne(@PathVariable Long restaurantId) {
+        return restaurantService.findById(restaurantId);
 
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Restaurant save(@RequestBody @Valid Restaurant restaurant) {
-        try {
-            return restaurantService.save(restaurant);
-        } catch (EntityNotExistsException e) {
-            throw new BusinessException(e.getMessage());
-        }
-
+    public RestaurantDTO save(@RequestBody @Valid RestaurantRequest restaurantRequest) {
+            return restaurantService.save(restaurantRequest);
     }
+
 
     @PutMapping("/{restaurantId}")
-    public Restaurant update(@PathVariable Long restaurantId, @RequestBody @Valid Restaurant restaurant) {
-        Restaurant currentRestaurant = restaurantService.searchById(restaurantId);
-
-        BeanUtils.copyProperties(restaurant, currentRestaurant,
-                "id", "formPayments", "address", "creationDate", "products");
-        try {
-            return restaurantService.save(currentRestaurant);
-        } catch (EntityNotExistsException e) {
-            throw new BusinessException(e.getMessage());
-        }
+    public RestaurantDTO update(@PathVariable Long restaurantId, @RequestBody @Valid RestaurantRequest restaurantRequest) {
+        return restaurantService.update(restaurantId, restaurantRequest);
 
     }
+
 }
