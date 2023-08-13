@@ -31,7 +31,7 @@ public class RestaurantController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public RestaurantDTO save(@RequestBody @Valid RestaurantRequest restaurantRequest) {
-            return restaurantService.save(restaurantRequest);
+        return restaurantService.save(restaurantRequest);
     }
 
     @PutMapping("/{restaurantId}")
@@ -40,4 +40,17 @@ public class RestaurantController {
 
     }
 
+    @PutMapping("/{restaurantId}/active")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void active(@PathVariable Long restaurantId) {
+        restaurantService.activate(restaurantId);
+
+        
+    }
+
+    @DeleteMapping("/{restaurantId}/active")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void inactive(@PathVariable Long restaurantId) {
+        restaurantService.inactivate(restaurantId);
+    }
 }

@@ -41,12 +41,12 @@ insert into city (id, name, state_id) values (3, 'Sao Paulo', 2);
 insert into city (id, name, state_id) values (4, 'Campinas', 2);
 insert into city (id, name, state_id) values (5, 'Fortaleza', 3);
 
-insert into restaurant (id, name, freight_rate, kitchen_id, creation_date, update_date, address_city_id, address_zip_code, address_street, address_number, address_district, address_complement ) values (1, 'Thai Gourmet', 10, 1, utc_timestamp, utc_timestamp, 1, '38400-999', 'Rua João Pinheiro', '1000', 'Centro', null);
-insert into restaurant (id, name, freight_rate, kitchen_id, creation_date, update_date) values (2,'Thai Delivery', 9.50, 1, utc_timestamp, utc_timestamp);
-insert into restaurant (id ,name, freight_rate, kitchen_id, creation_date, update_date) values (3,'Tuk Tuk Food Indian', 15, 2, utc_timestamp, utc_timestamp);
-insert into restaurant (id, name, freight_rate, kitchen_id, creation_date, update_date) values (4,'Java Steakhouse', 12, 3, utc_timestamp, utc_timestamp);
-insert into restaurant (id ,name, freight_rate, kitchen_id, creation_date, update_date) values (5,'Uncle Sams Diner', 11, 4, utc_timestamp, utc_timestamp);
-insert into restaurant (id ,name, freight_rate, kitchen_id, creation_date, update_date) values (6, 'Marias bar', 6, 4, utc_timestamp, utc_timestamp);
+insert into restaurant (id, name, freight_rate, kitchen_id, creation_date, update_date, active, address_city_id, address_zip_code, address_street, address_number, address_district, address_complement ) values (1, 'Thai Gourmet', 10, 1, utc_timestamp, utc_timestamp, true, 1, '38400-999', 'Rua João Pinheiro', '1000', 'Centro', null);
+insert into restaurant (id, name, freight_rate, kitchen_id, creation_date, update_date, active) values (2,'Thai Delivery', 9.50, 1, utc_timestamp, utc_timestamp, true);
+insert into restaurant (id ,name, freight_rate, kitchen_id, creation_date, update_date, active) values (3,'Tuk Tuk Food Indian', 15, 2, utc_timestamp, utc_timestamp, true);
+insert into restaurant (id, name, freight_rate, kitchen_id, creation_date, update_date, active) values (4,'Java Steakhouse', 12, 3, utc_timestamp, utc_timestamp, true);
+insert into restaurant (id ,name, freight_rate, kitchen_id, creation_date, update_date, active) values (5,'Uncle Sams Diner', 11, 4, utc_timestamp, utc_timestamp, true);
+insert into restaurant (id ,name, freight_rate, kitchen_id, creation_date, update_date, active) values (6, 'Marias bar', 6, 4, utc_timestamp, utc_timestamp, true);
 
 insert into form_payment (id, description) values (1, 'Credit card');
 insert into form_payment (id, description) values (2, 'Debit card');
