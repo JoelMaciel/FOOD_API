@@ -45,7 +45,7 @@ public class RestaurantController {
     public void active(@PathVariable Long restaurantId) {
         restaurantService.activate(restaurantId);
 
-        
+
     }
 
     @DeleteMapping("/{restaurantId}/active")

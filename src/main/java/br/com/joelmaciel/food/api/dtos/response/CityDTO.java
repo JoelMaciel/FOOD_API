@@ -1,7 +1,6 @@
 package br.com.joelmaciel.food.api.dtos.response;
 
 import br.com.joelmaciel.food.domain.model.City;
-import br.com.joelmaciel.food.domain.model.State;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
