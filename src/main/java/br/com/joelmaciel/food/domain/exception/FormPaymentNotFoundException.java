@@ -1,6 +1,6 @@
 package br.com.joelmaciel.food.domain.exception;
 
-public class FormPaymentNotFoundException  extends EntityNotExistsException{
+public class FormPaymentNotFoundException  extends EntityNotExistException {
     private static final long serialVersionUID = 1L;
 
     public FormPaymentNotFoundException(String message) {

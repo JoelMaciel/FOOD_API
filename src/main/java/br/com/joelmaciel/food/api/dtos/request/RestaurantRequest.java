@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 
 @Getter
 @Setter
-@Builder
+@Builder(toBuilder = true)
 public class RestaurantRequest {
 
     @NotBlank
@@ -27,13 +27,21 @@ public class RestaurantRequest {
     @NotNull
     private KitchenIdRequest kitchen;
 
+    @NotNull
+    private Boolean active;
+
+    @Valid
+    @NotNull
+    private AddressRequest address;
+
     public static Restaurant toModel(RestaurantRequest restaurantRequest) {
         return Restaurant.builder()
                 .name(restaurantRequest.getName())
                 .freightRate(restaurantRequest.getFreightRate())
-                .kitchen(KitchenIdRequest.toModel(restaurantRequest.getKitchen()))
+                .kitchen(KitchenIdRequest.toEntity(restaurantRequest.getKitchen()))
+                .active(restaurantRequest.getActive())
+                .address(AddressRequest.toEntity(restaurantRequest.getAddress()))
                 .build();
-
     }
 
 }
