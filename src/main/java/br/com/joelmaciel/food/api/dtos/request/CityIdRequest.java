@@ -20,5 +20,4 @@ public class CityIdRequest {
                 .id(cityIdRequest.getId())
                 .build();
     }
-
 }

@@ -67,7 +67,7 @@ insert into product (name, description, price, active, restaurant_id) values ('T
 insert into product (name, description, price, active, restaurant_id) values ('Sanduíche X-Tudo', 'Sandubão with lots of cheese, beef hamburger, bacon, egg, salad and mayonnaise', 19, 1, 5);
 insert into product (name, description, price, active, restaurant_id) values ('Termite skewer', 'Flour, cassava and vinaigrette', 8, 1, 6);
 
-
+insert into cluster (name) values ('Manager'), ('Salesperson'), ('Secretary'), ('Register');
 
 
 
