@@ -69,6 +69,12 @@ insert into product (name, description, price, active, restaurant_id) values ('T
 
 insert into cluster (name) values ('Manager'), ('Salesperson'), ('Secretary'), ('Register');
 
+insert into user (id, name, email, password, creation_date) values
+(1, 'João da Silva', 'joao.ger@gmail.com', '123', utc_timestamp),
+(2, 'Maria Joaquina', 'maria.vnd@gmail.com', '123', utc_timestamp),
+(3, 'José Souza', 'jose.aux@gmail.com', '123', utc_timestamp),
+(4, 'Sebastião Martins', 'sebastiao.cad@gmail.com', '123', utc_timestamp);
+
 
 
 
