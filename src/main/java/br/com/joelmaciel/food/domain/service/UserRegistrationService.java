@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -35,6 +36,7 @@ public class UserRegistrationService {
     @Transactional
     public UserDTO saveUser(UserWithPasswordRequest userRequest) {
         User user = UserWithPasswordRequest.toEntity(userRequest);
+        validateEmail(user);
         return UserDTO.toDTO(userRepository.save(user));
     }
 
@@ -44,6 +46,8 @@ public class UserRegistrationService {
                 .name(userRequest.getName())
                 .email(userRequest.getEmail())
                 .build();
+
+        validateEmail(user);
         return UserDTO.toDTO(userRepository.save(user));
     }
 
@@ -57,9 +61,17 @@ public class UserRegistrationService {
         user.setPassword(newPassword);
     }
 
+    public void validateEmail(User userRequest) {
+        Optional<User> existingUser = userRepository.findByEmail(userRequest.getEmail());
+        if (existingUser.isPresent() && !existingUser.get().equals(userRequest)) {
+            throw new BusinessException(
+                    String.format("A user with email %s already exists", userRequest.getEmail()));
+        }
+    }
+
+
     public User searchByUserId(Long userId) {
         return userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(userId));
     }
-
 }
