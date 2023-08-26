@@ -76,4 +76,5 @@ public class CityRegistrationService {
         return cityRepository.findById(cityId).orElseThrow(
                 () -> new CityNotFoundException(cityId));
     }
+
 }
