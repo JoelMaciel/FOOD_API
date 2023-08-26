@@ -1,6 +1,6 @@
 package br.com.joelmaciel.food.domain.exception;
 
-public class KitchenNotFoundException extends EntityNotExistsException {
+public class KitchenNotFoundException extends EntityNotExistException {
 
     public KitchenNotFoundException(String message) {
         super(message);

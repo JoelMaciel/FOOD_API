@@ -16,6 +16,8 @@ public class RestaurantDTO {
     private String name;
     private BigDecimal freightRate;
     private KitchenDTO kitchen;
+    private Boolean active;
+    private AddressDTO address;
 
     public static RestaurantDTO toDTO(Restaurant restaurant) {
         return RestaurantDTO.builder()
@@ -23,6 +25,8 @@ public class RestaurantDTO {
                 .name(restaurant.getName())
                 .freightRate(restaurant.getFreightRate())
                 .kitchen(KitchenDTO.toDTO(restaurant.getKitchen()))
+                .active(restaurant.getActive())
+                .address(AddressDTO.toDTO(restaurant.getAddress()))
                 .build();
     }
 }

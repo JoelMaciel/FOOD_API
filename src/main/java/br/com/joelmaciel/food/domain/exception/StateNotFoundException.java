@@ -1,6 +1,6 @@
 package br.com.joelmaciel.food.domain.exception;
 
-public class StateNotFoundException extends EntityNotExistsException {
+public class StateNotFoundException extends EntityNotExistException {
 
     public StateNotFoundException(String message) {
         super(message);

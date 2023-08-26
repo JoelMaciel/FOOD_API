@@ -1,15 +1,17 @@
 package br.com.joelmaciel.food.domain.model;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
-@Entity
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder(toBuilder = true)
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@Entity
 public class Cluster {
 
     @Id

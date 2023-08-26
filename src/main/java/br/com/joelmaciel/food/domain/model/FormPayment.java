@@ -1,12 +1,15 @@
 package br.com.joelmaciel.food.domain.model;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 
-@Entity
+@Builder(toBuilder = true)
+@NoArgsConstructor
+@AllArgsConstructor
 @Data
+@Entity
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class FormPayment {
 

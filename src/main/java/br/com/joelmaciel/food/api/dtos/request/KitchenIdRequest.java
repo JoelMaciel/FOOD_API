@@ -17,7 +17,7 @@ public class KitchenIdRequest {
     private Long id;
     private String name;
 
-    public static Kitchen toModel(KitchenIdRequest kitchenIdRequest) {
+    public static Kitchen toEntity(KitchenIdRequest kitchenIdRequest) {
         return Kitchen.builder()
                 .id(kitchenIdRequest.getId())
                 .name(kitchenIdRequest.getName())

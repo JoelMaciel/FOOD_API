@@ -34,7 +34,7 @@ public class KitchenRegistrationService {
 
     @Transactional
     public KitchenDTO save(KitchenRequest kitchenRequest) {
-        Kitchen kitchen = kitchenRepository.save(KitchenRequest.toModel(kitchenRequest));
+        Kitchen kitchen = kitchenRepository.save(KitchenRequest.toEntity(kitchenRequest));
         return KitchenDTO.toDTO(kitchen);
     }
 

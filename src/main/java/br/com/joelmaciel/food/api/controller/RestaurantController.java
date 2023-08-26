@@ -25,19 +25,29 @@ public class RestaurantController {
     @GetMapping("/{restaurantId}")
     public RestaurantDTO getOne(@PathVariable Long restaurantId) {
         return restaurantService.findById(restaurantId);
-
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public RestaurantDTO save(@RequestBody @Valid RestaurantRequest restaurantRequest) {
-            return restaurantService.save(restaurantRequest);
+        return restaurantService.save(restaurantRequest);
     }
 
     @PutMapping("/{restaurantId}")
-    public RestaurantDTO update(@PathVariable Long restaurantId, @RequestBody @Valid RestaurantRequest restaurantRequest) {
+    public RestaurantDTO update(@PathVariable Long restaurantId,
+                                @RequestBody @Valid RestaurantRequest restaurantRequest) {
         return restaurantService.update(restaurantId, restaurantRequest);
-
     }
 
+    @PutMapping("/{restaurantId}/active")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void active(@PathVariable Long restaurantId) {
+        restaurantService.activate(restaurantId);
+    }
+
+    @DeleteMapping("/{restaurantId}/active")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void inactive(@PathVariable Long restaurantId) {
+        restaurantService.inactivate(restaurantId);
+    }
 }

@@ -10,13 +10,12 @@ import javax.validation.constraints.NotBlank;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-
 public class KitchenRequest {
 
     @NotBlank
     private String name;
 
-    public static Kitchen toModel(KitchenRequest kitchenIdRequest) {
+    public static Kitchen toEntity(KitchenRequest kitchenIdRequest) {
         return Kitchen.builder()
                 .name(kitchenIdRequest.getName())
                 .build();

@@ -1,6 +1,6 @@
 package br.com.joelmaciel.food.domain.exception;
 
-public class CityNotFoundException extends EntityNotExistsException {
+public class CityNotFoundException extends EntityNotExistException {
 
     public CityNotFoundException(String message) {
         super(message);

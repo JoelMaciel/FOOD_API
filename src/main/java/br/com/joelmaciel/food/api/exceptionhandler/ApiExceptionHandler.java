@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.JsonMappingException.Reference;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.fasterxml.jackson.databind.exc.PropertyBindingException;
 import br.com.joelmaciel.food.domain.exception.EntityInUseException;
-import br.com.joelmaciel.food.domain.exception.EntityNotExistsException;
+import br.com.joelmaciel.food.domain.exception.EntityNotExistException;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.TypeMismatchException;
@@ -51,8 +51,8 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
     }
 
-    @ExceptionHandler(EntityNotExistsException.class)
-    public ResponseEntity<?> handleEntityNotFound(EntityNotExistsException ex, WebRequest request) {
+    @ExceptionHandler(EntityNotExistException.class)
+    public ResponseEntity<?> handleEntityNotFound(EntityNotExistException ex, WebRequest request) {
 
         HttpStatus status = HttpStatus.NOT_FOUND;
         ProblemType problemType = ProblemType.RESOURCE_NOT_FUND;

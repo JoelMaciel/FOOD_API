@@ -8,17 +8,18 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-public class CityDTO {
+public class CitySummaryDTO {
 
     private Long id;
     private String name;
-    private StateDTO state;
+    private String state;
 
-    public static CityDTO toDTO(City city) {
-        return CityDTO.builder()
+    public static CitySummaryDTO toDTO(City city) {
+        return CitySummaryDTO.builder()
                 .id(city.getId())
                 .name(city.getName())
-                .state(StateDTO.toDTO(city.getState()))
+                .state(city.getState().getName())
                 .build();
     }
+
 }
