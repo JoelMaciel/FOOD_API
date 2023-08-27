@@ -26,6 +26,7 @@ public class RestaurantRegistrationService {
     private final KitchenRegistrationService kitchenService;
     private final CityRegistrationService cityRegistrationService;
 
+
     public List<RestaurantDTO> findAll() {
         List<Restaurant> restaurants = restaurantRepository.findAll();
         return restaurants.stream()
@@ -109,6 +110,7 @@ public class RestaurantRegistrationService {
         Long cityId = restaurantRequest.getAddress().getCity().getId();
         cityRegistrationService.searchById(cityId);
     }
+
 
     public Restaurant searchById(Long restaurantId) {
         return restaurantRepository.findById(restaurantId)
