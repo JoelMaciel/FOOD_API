@@ -4,7 +4,9 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -26,5 +28,13 @@ public class Cluster {
     @JoinTable(name = "cluster_permission",
             joinColumns = @JoinColumn(name = "cluster_id"),
             inverseJoinColumns = @JoinColumn(name = "permission_id"))
-    private List<Permission> permissions = new ArrayList<>();
+    private Set<Permission> permissions = new HashSet<>();
+
+    public boolean removePermission(Permission permission) {
+        return getPermissions().remove(permission);
+    }
+
+    public boolean addPermission(Permission permission) {
+        return getPermissions().add(permission);
+    }
 }

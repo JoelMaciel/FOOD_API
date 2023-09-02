@@ -14,11 +14,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@RequiredArgsConstructor
+
 @Service
+@RequiredArgsConstructor
 public class ClusterRegistrationService {
 
     public static final String MSG_CLUSTER_IN_USE = "Code cluster %d cannot be removed as it is in use";
+
     private final ClusterRepository clusterRepository;
 
     public List<ClusterDTO> findAllCuster() {
@@ -63,5 +65,6 @@ public class ClusterRegistrationService {
         return clusterRepository.findById(clusterId)
                 .orElseThrow(() -> new ClusterNotFoundException(clusterId));
     }
+
 
 }

@@ -67,7 +67,9 @@ insert into product (name, description, price, active, restaurant_id) values ('T
 insert into product (name, description, price, active, restaurant_id) values ('Sanduíche X-Tudo', 'Sandubão with lots of cheese, beef hamburger, bacon, egg, salad and mayonnaise', 19, 1, 5);
 insert into product (name, description, price, active, restaurant_id) values ('Termite skewer', 'Flour, cassava and vinaigrette', 8, 1, 6);
 
-insert into cluster (name) values ('Manager'), ('Salesperson'), ('Secretary'), ('Register');
+insert into cluster (id, name) values (1, 'Manager'), (2, 'Salesperson'), (3, 'Secretary'), (4, 'Register');
+
+insert into cluster_permission (cluster_id, permission_id) values (1, 1), (1, 2), (2, 1), (2, 2), (3, 1);
 
 insert into user (id, name, email, password, creation_date) values
 (1, 'João da Silva', 'joao.ger@gmail.com', '123', utc_timestamp),

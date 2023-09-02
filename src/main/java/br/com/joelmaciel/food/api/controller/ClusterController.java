@@ -5,6 +5,7 @@ import br.com.joelmaciel.food.api.dtos.request.ClusterRequest;
 import br.com.joelmaciel.food.api.dtos.response.ClusterDTO;
 import br.com.joelmaciel.food.domain.service.ClusterRegistrationService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
