@@ -106,6 +106,19 @@ public class RestaurantRegistrationService {
         restaurant.inactivate();
     }
 
+    @Transactional
+    public void open(Long restaurantId) {
+        Restaurant restaurant = searchById(restaurantId);
+        restaurant.open();
+    }
+
+    @Transactional
+    public void close(Long restaurantId) {
+        Restaurant restaurant = searchById(restaurantId);
+        restaurant.close();
+    }
+
+
     private void validateCity(RestaurantRequest restaurantRequest) {
         Long cityId = restaurantRequest.getAddress().getCity().getId();
         cityRegistrationService.searchById(cityId);
@@ -116,6 +129,5 @@ public class RestaurantRegistrationService {
         return restaurantRepository.findById(restaurantId)
                 .orElseThrow(() -> new RestaurantNotFoundException(restaurantId));
     }
-
 
 }

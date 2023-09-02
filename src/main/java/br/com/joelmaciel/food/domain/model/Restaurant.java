@@ -40,6 +40,8 @@ public class Restaurant {
 
     private Boolean active = Boolean.TRUE;
 
+    private Boolean open = Boolean.FALSE;
+
     @CreationTimestamp
     @Column(nullable = false, columnDefinition = "datetime")
     private OffsetDateTime creationDate;
@@ -71,6 +73,14 @@ public class Restaurant {
 
     public boolean addFormPayment(FormPayment formPayment) {
         return getFormPayments().add(formPayment);
+    }
+
+    public void open() {
+        setOpen(true);
+    }
+
+    public void close() {
+        setOpen(false);
     }
 
 }
