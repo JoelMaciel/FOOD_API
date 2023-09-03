@@ -5,8 +5,8 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -38,7 +38,7 @@ public class User {
     @JoinTable(name = "user_cluster",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "cluster_id"))
-    private List<Cluster> clusters = new ArrayList<>();
+    private Set<Cluster> clusters = new HashSet<>();
 
     public boolean passwordMatches(String password) {
         return getPassword().equals(password);
@@ -46,6 +46,14 @@ public class User {
 
     public boolean passwordDoesNotMatch(String password) {
         return !passwordMatches(password);
+    }
+
+    public boolean removeCluster(Cluster cluster) {
+        return getClusters().remove(cluster);
+    }
+
+    public boolean addCluster(Cluster cluster) {
+        return getClusters().add(cluster);
     }
 }
 

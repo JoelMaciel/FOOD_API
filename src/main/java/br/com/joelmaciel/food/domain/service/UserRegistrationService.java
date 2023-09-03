@@ -2,9 +2,11 @@ package br.com.joelmaciel.food.domain.service;
 
 import br.com.joelmaciel.food.api.dtos.request.UserRequest;
 import br.com.joelmaciel.food.api.dtos.request.UserWithPasswordRequest;
+import br.com.joelmaciel.food.api.dtos.response.ClusterDTO;
 import br.com.joelmaciel.food.api.dtos.response.UserDTO;
 import br.com.joelmaciel.food.domain.exception.BusinessException;
 import br.com.joelmaciel.food.domain.exception.UserNotFoundException;
+import br.com.joelmaciel.food.domain.model.Cluster;
 import br.com.joelmaciel.food.domain.model.User;
 import br.com.joelmaciel.food.domain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -13,19 +15,31 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
 public class UserRegistrationService {
 
     public static final String MSG_ERROR_PASSWORD = "Current password entered does not match the user's password.";
+    public static final String MSG_EMAIL_EXISTS = "A user with email %s already exists";
     private final UserRepository userRepository;
+    private final ClusterRegistrationService clusterService;
 
     public List<UserDTO> findAllUsers() {
         List<User> users = userRepository.findAll();
         return users.stream()
                 .map(UserDTO::toDTO)
                 .toList();
+    }
+
+    public Set<ClusterDTO> findAllClusters(Long userId) {
+        User user = searchByUserId(userId);
+        Set<Cluster> clusters = user.getClusters();
+        return clusters.stream()
+                .map(ClusterDTO::toDTO)
+                .collect(Collectors.toSet());
     }
 
     public UserDTO findByUserId(Long userId) {
@@ -61,11 +75,26 @@ public class UserRegistrationService {
         user.setPassword(newPassword);
     }
 
+    @Transactional
+    public void associateCluster(Long userId, Long clusterId) {
+        User user = searchByUserId(userId);
+        Cluster cluster = clusterService.searchById(clusterId);
+        user.addCluster(cluster);
+    }
+
+    @Transactional
+    public void disassociateCluster(Long clusterId, Long userId) {
+        User user = searchByUserId(userId);
+        Cluster cluster = clusterService.searchById(clusterId);
+        user.removeCluster(cluster);
+    }
+
+
     public void validateEmail(User userRequest) {
         Optional<User> existingUser = userRepository.findByEmail(userRequest.getEmail());
         if (existingUser.isPresent() && !existingUser.get().equals(userRequest)) {
             throw new BusinessException(
-                    String.format("A user with email %s already exists", userRequest.getEmail()));
+                    String.format(MSG_EMAIL_EXISTS, userRequest.getEmail()));
         }
     }
 
@@ -74,4 +103,6 @@ public class UserRegistrationService {
         return userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(userId));
     }
+
+
 }

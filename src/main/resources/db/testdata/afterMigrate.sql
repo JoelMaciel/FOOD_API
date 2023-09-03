@@ -77,6 +77,8 @@ insert into user (id, name, email, password, creation_date) values
 (3, 'José Souza', 'jose.aux@gmail.com', '123', utc_timestamp),
 (4, 'Sebastião Martins', 'sebastiao.cad@gmail.com', '123', utc_timestamp);
 
+insert into user_cluster (user_id, cluster_id) values (1, 1), (1, 2), (2, 2);
+
 
 
 

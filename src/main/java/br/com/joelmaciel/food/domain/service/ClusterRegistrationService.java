@@ -61,6 +61,7 @@ public class ClusterRegistrationService {
         return ClusterDTO.toDTO(clusterRepository.save(cluster));
     }
 
+
     public Cluster searchById(Long clusterId) {
         return clusterRepository.findById(clusterId)
                 .orElseThrow(() -> new ClusterNotFoundException(clusterId));
