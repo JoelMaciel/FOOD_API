@@ -13,6 +13,7 @@ delete from restaurant_form_payment;
 delete from state;
 delete from user;
 delete from user_cluster;
+delete from restaurant_responsible_user;
 
 set foreign_key_checks = 1;
 
@@ -26,20 +27,20 @@ alter table product auto_increment = 1;
 alter table restaurant auto_increment = 1;
 alter table user auto_increment = 1;
 
-insert into kitchen (id, name) values (1, 'Thai');
-insert into kitchen (id, name) values (2, 'Indian');
-insert into kitchen (id, name) values (3, 'Argentina');
-insert into kitchen (id, name) values (4, 'Brazilian');
+insert into kitchen (id, name) values (1, 'Southern');
+insert into kitchen (id, name) values (2, 'Cajun');
+insert into kitchen (id, name) values (3, 'Midwestern');
+insert into kitchen (id, name) values (4, 'Hawaiian ');
 
-insert into state (id, name) values  (1, 'Minas Gerais');
-insert into state (id, name) values  (2, 'Sao Paulo');
-insert into state (id, name) values  (3, 'Ceará');
+insert into state (id, name) values  (1, 'Colorado');
+insert into state (id, name) values  (2, 'Califórnia');
+insert into state (id, name) values  (3, 'Alabama');
 
-insert into city (id, name, state_id) values (1, 'Uberlândia', 1);
-insert into city (id, name, state_id) values (2, 'Belo Horizonte', 1);
-insert into city (id, name, state_id) values (3, 'Sao Paulo', 2);
-insert into city (id, name, state_id) values (4, 'Campinas', 2);
-insert into city (id, name, state_id) values (5, 'Fortaleza', 3);
+insert into city (id, name, state_id) values (1, 'Nova York', 1);
+insert into city (id, name, state_id) values (2, 'Los Angeles', 1);
+insert into city (id, name, state_id) values (3, 'Chicago', 2);
+insert into city (id, name, state_id) values (4, 'Filadélfia', 2);
+insert into city (id, name, state_id) values (5, 'San Diego', 3);
 
 insert into restaurant (id, name, freight_rate, kitchen_id, creation_date, update_date, active, open, address_city_id, address_zip_code, address_street, address_number, address_district, address_complement ) values (1, 'Thai Gourmet', 10, 1, utc_timestamp, utc_timestamp, true, true, 1, '38400-999', 'Street Elm Street', '1000', 'Acres', 'Apartment 5A');
 insert into restaurant (id, name, freight_rate, kitchen_id, creation_date, update_date, active, open, address_city_id, address_zip_code, address_street, address_number, address_district, address_complement ) values (2,'Thai Delivery', 9.50, 1, utc_timestamp, utc_timestamp, true, true,  2, '78589-547', 'Street Maplewood Heights', '550', 'Highland Park', 'Suite 202');
@@ -72,12 +73,17 @@ insert into cluster (id, name) values (1, 'Manager'), (2, 'Salesperson'), (3, 'S
 insert into cluster_permission (cluster_id, permission_id) values (1, 1), (1, 2), (2, 1), (2, 2), (3, 1);
 
 insert into user (id, name, email, password, creation_date) values
-(1, 'João da Silva', 'joao.ger@gmail.com', '123', utc_timestamp),
-(2, 'Maria Joaquina', 'maria.vnd@gmail.com', '123', utc_timestamp),
-(3, 'José Souza', 'jose.aux@gmail.com', '123', utc_timestamp),
-(4, 'Sebastião Martins', 'sebastiao.cad@gmail.com', '123', utc_timestamp);
+(1, 'Oliver Smith', 'oliver@gmail.com', '123', utc_timestamp),
+(2, 'Jack Jones', 'jack@gmail.com', '123', utc_timestamp),
+(3, 'Harry Williams', 'harry@gmail.com', '123', utc_timestamp),
+(4, 'Charlie Davies', 'charles@gmail.com', '123', utc_timestamp),
+(5, 'George Wilson', 'george@gmail.com', '123', utc_timestamp);
+
 
 insert into user_cluster (user_id, cluster_id) values (1, 1), (1, 2), (2, 2);
+
+insert into restaurant_responsible_user (restaurant_id, user_id) values (1, 5), (3, 5);
+
 
 
 

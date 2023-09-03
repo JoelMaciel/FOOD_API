@@ -24,8 +24,10 @@ public class UserRegistrationService {
 
     public static final String MSG_ERROR_PASSWORD = "Current password entered does not match the user's password.";
     public static final String MSG_EMAIL_EXISTS = "A user with email %s already exists";
+
     private final UserRepository userRepository;
     private final ClusterRegistrationService clusterService;
+
 
     public List<UserDTO> findAllUsers() {
         List<User> users = userRepository.findAll();
@@ -41,6 +43,7 @@ public class UserRegistrationService {
                 .map(ClusterDTO::toDTO)
                 .collect(Collectors.toSet());
     }
+
 
     public UserDTO findByUserId(Long userId) {
         User user = searchByUserId(userId);
@@ -103,6 +106,5 @@ public class UserRegistrationService {
         return userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(userId));
     }
-
 
 }

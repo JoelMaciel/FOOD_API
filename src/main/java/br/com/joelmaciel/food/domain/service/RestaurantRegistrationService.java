@@ -4,6 +4,7 @@ import br.com.joelmaciel.food.api.dtos.request.AddressRequest;
 import br.com.joelmaciel.food.api.dtos.request.KitchenIdRequest;
 import br.com.joelmaciel.food.api.dtos.request.RestaurantRequest;
 import br.com.joelmaciel.food.api.dtos.response.RestaurantDTO;
+import br.com.joelmaciel.food.api.dtos.response.UserDTO;
 import br.com.joelmaciel.food.domain.exception.BusinessException;
 import br.com.joelmaciel.food.domain.exception.CityNotFoundException;
 import br.com.joelmaciel.food.domain.exception.KitchenNotFoundException;
@@ -11,12 +12,15 @@ import br.com.joelmaciel.food.domain.exception.RestaurantNotFoundException;
 import br.com.joelmaciel.food.domain.model.City;
 import br.com.joelmaciel.food.domain.model.Kitchen;
 import br.com.joelmaciel.food.domain.model.Restaurant;
+import br.com.joelmaciel.food.domain.model.User;
 import br.com.joelmaciel.food.domain.repository.RestaurantRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -25,6 +29,7 @@ public class RestaurantRegistrationService {
     private final RestaurantRepository restaurantRepository;
     private final KitchenRegistrationService kitchenService;
     private final CityRegistrationService cityRegistrationService;
+    private final UserRegistrationService userService;
 
 
     public List<RestaurantDTO> findAll() {
@@ -33,6 +38,14 @@ public class RestaurantRegistrationService {
                 .map(RestaurantDTO::toDTO)
                 .toList();
     }
+
+    public Set<UserDTO> findAllUsersRestaurants(Long restaurantId) {
+        Restaurant restaurant = searchById(restaurantId);
+        return restaurant.getResponsible().stream()
+                .map(UserDTO::toDTO)
+                .collect(Collectors.toSet());
+    }
+
 
     public RestaurantDTO findById(Long restaurantId) {
         Restaurant restaurant = searchById(restaurantId);
@@ -118,6 +131,20 @@ public class RestaurantRegistrationService {
         restaurant.close();
     }
 
+    @Transactional
+    public void associateResponsible(Long restaurantId, Long userId) {
+        Restaurant restaurant = searchById(restaurantId);
+        User user = userService.searchByUserId(userId);
+        restaurant.addResponsible(user);
+    }
+
+    @Transactional
+    public void disassociateResponsible(Long restaurantId, Long userId) {
+        Restaurant restaurant = searchById(restaurantId);
+        User user = userService.searchByUserId(userId);
+        restaurant.removeResponsible(user);
+    }
+
 
     private void validateCity(RestaurantRequest restaurantRequest) {
         Long cityId = restaurantRequest.getAddress().getCity().getId();
@@ -129,5 +156,6 @@ public class RestaurantRegistrationService {
         return restaurantRepository.findById(restaurantId)
                 .orElseThrow(() -> new RestaurantNotFoundException(restaurantId));
     }
+
 
 }
