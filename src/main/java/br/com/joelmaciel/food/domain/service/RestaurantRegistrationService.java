@@ -120,6 +120,24 @@ public class RestaurantRegistrationService {
     }
 
     @Transactional
+    public void activate(List<Long> restaurantIds) {
+        try {
+            restaurantIds.forEach(this::activate);
+        } catch (RestaurantNotFoundException e) {
+            throw new BusinessException(e.getMessage(), e);
+        }
+    }
+
+    @Transactional
+    public void inactivate(List<Long> restaurantIds) {
+        try {
+            restaurantIds.forEach(this::inactivate);
+        } catch (RestaurantNotFoundException e) {
+            throw new BusinessException(e.getMessage(), e);
+        }
+    }
+
+    @Transactional
     public void open(Long restaurantId) {
         Restaurant restaurant = searchById(restaurantId);
         restaurant.open();

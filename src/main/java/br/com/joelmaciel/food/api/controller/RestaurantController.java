@@ -51,9 +51,21 @@ public class RestaurantController {
         restaurantService.inactivate(restaurantId);
     }
 
+    @PutMapping("/activations")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void activateMultiples(@RequestBody List<Long> restaurantIds) {
+        restaurantService.activate(restaurantIds);
+    }
+
+    @DeleteMapping("/inactivations")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void inactivateMultiples(@RequestBody List<Long> restaurantIds) {
+        restaurantService.inactivate(restaurantIds);
+    }
+
     @PutMapping("/{restaurantId}/opening")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void open (@PathVariable Long restaurantId) {
+    public void open(@PathVariable Long restaurantId) {
         restaurantService.open(restaurantId);
     }
 
