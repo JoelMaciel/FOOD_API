@@ -6,7 +6,7 @@
 
 ## Project under construction....
 
-This API Project is based on the IFood application where customers register and can order food 
+This API Project is based on the IFood application where customers register and can purchase food 
 in general, being able to choose restaurants by desired States and Cities.
  You can choose credit card, debit or cash payment methods.
 ## Modelo Conceitual

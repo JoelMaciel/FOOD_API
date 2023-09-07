@@ -81,6 +81,13 @@ public class Restaurant {
         return getFormPayments().add(formPayment);
     }
 
+    public boolean acceptPaymentForm(FormPayment formPayment) {
+        return getFormPayments().contains(formPayment);
+    }
+    public boolean doesNotAcceptPaymentForm(FormPayment formPayment) {
+        return !getFormPayments().contains(formPayment);
+    }
+
     public void open() {
         setOpen(true);
     }

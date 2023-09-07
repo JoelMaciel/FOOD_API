@@ -6,7 +6,6 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,24 +13,25 @@ import java.util.List;
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
-public class Order {
+public class Purchase {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
     private Long id;
 
-    private BigDecimal subTotal;
+    private BigDecimal subtotal;
     private BigDecimal freightRate;
     private BigDecimal totalAmount;
 
     @Embedded
     private Address deliveryAddress;
 
-    private StatusOrder status;
+    @Enumerated(EnumType.STRING)
+    private StatusOrder status = StatusOrder.CREATED;
 
     @CreationTimestamp
-    private LocalDateTime creationDate;
+    private OffsetDateTime creationDate;
 
     private OffsetDateTime confirmationDate;
     private OffsetDateTime cancellationDate;
@@ -49,8 +49,24 @@ public class Order {
     @JoinColumn(name = "user_client_id", nullable = false)
     private User client;
 
-    @OneToMany(mappedBy = "order")
-    private List<OrderItem> orderItems = new ArrayList<>();
+    @OneToMany(mappedBy = "purchase")
+    private List<PurchaseItem> purchaseItems = new ArrayList<>();
+
+    public void calculateTotalValue() {
+        this.subtotal = getPurchaseItems().stream()
+                .map(PurchaseItem::getTotalPrice)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        this.totalAmount = this.subtotal.add(freightRate);
+    }
+
+    public void defineRate() {
+        setFreightRate(getRestaurant().getFreightRate());
+    }
+
+    public void assignOrdersToItems() {
+        getPurchaseItems().forEach(item -> item.setPurchase(this));
+    }
 
 
 }

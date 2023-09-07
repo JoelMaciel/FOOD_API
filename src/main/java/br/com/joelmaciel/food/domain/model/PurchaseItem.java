@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Data
 @Entity
-public class OrderItem {
+public class PurchaseItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,7 +23,7 @@ public class OrderItem {
 
     @ManyToOne
     @JoinColumn(nullable = false)
-    private Order order;
+    private Purchase purchase;
 
     @ManyToOne
     @JoinColumn(nullable = false)

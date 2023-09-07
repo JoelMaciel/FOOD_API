@@ -14,6 +14,8 @@ delete from state;
 delete from user;
 delete from user_cluster;
 delete from restaurant_responsible_user;
+delete from purchase;
+delete from purchase_item;
 
 set foreign_key_checks = 1;
 
@@ -83,6 +85,17 @@ insert into user (id, name, email, password, creation_date) values
 insert into user_cluster (user_id, cluster_id) values (1, 1), (1, 2), (2, 2);
 
 insert into restaurant_responsible_user (restaurant_id, user_id) values (1, 5), (3, 5);
+
+insert into purchase (id, restaurant_id, user_client_id, form_payment_id, address_city_id, address_zip_code, address_street , address_number, address_complement, address_district, status, creation_date, subtotal, freight_rate, total_amount) values(1, 1, 1, 1, 1, '38400000', 'Rua Floriano Peixoto', '500', 'Apto 801', 'Brasil', 'CREATED', utc_timestamp, 298.90, 10, 308.90);
+
+insert into purchase_item (id, purchase_id, product_id, quantity, unit_price, total_price, observation) values(1, 1, 1, 1, 78.9, 78.9, null);
+
+insert into purchase_item (id, purchase_id, product_id, quantity, unit_price, total_price, observation) values(2, 1, 2, 2, 110, 220, 'Less spicy please');
+
+
+insert into purchase (id, restaurant_id, user_client_id, form_payment_id, address_city_id, address_zip_code, address_street , address_number, address_complement, address_district, status, creation_date, subtotal, freight_rate, total_amount) values(2, 4, 1, 2, 1, '38400000', 'Rua Acre', '300', 'House 2', 'Downtown', 'CREATED', utc_timestamp, 79, 0, 79);
+
+insert into purchase_item (id, purchase_id, product_id, quantity, unit_price, total_price, observation) values(3, 2, 6, 1, 79, 79, 'To the point');
 
 
 
