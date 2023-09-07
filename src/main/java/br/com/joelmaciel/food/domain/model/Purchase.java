@@ -37,7 +37,7 @@ public class Purchase {
     private OffsetDateTime cancellationDate;
     private OffsetDateTime deliveryDate;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(nullable = false)
     private FormPayment formPayment;
 

@@ -1,6 +1,7 @@
 package br.com.joelmaciel.food.api.controller;
 
 import br.com.joelmaciel.food.api.dtos.response.PurchaseDTO;
+import br.com.joelmaciel.food.api.dtos.response.PurchaseSummaryDTO;
 import br.com.joelmaciel.food.domain.service.PurchaseGenerationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,7 +19,7 @@ public class PurchaseController {
     private final PurchaseGenerationService purchaseGenerationService;
 
     @GetMapping
-    public List<PurchaseDTO> listAll() {
+    public List<PurchaseSummaryDTO> listAll() {
         return purchaseGenerationService.listAllPurchase();
     }
 

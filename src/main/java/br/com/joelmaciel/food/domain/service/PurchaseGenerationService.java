@@ -1,6 +1,7 @@
 package br.com.joelmaciel.food.domain.service;
 
 import br.com.joelmaciel.food.api.dtos.response.PurchaseDTO;
+import br.com.joelmaciel.food.api.dtos.response.PurchaseSummaryDTO;
 import br.com.joelmaciel.food.domain.exception.PurchaseNotFoundException;
 import br.com.joelmaciel.food.domain.model.Purchase;
 import br.com.joelmaciel.food.domain.repository.PurchaseIdRepository;
@@ -15,10 +16,10 @@ public class PurchaseGenerationService {
 
     private final PurchaseIdRepository purchaseIdRepository;
 
-    public List<PurchaseDTO> listAllPurchase() {
+    public List<PurchaseSummaryDTO> listAllPurchase() {
         List<Purchase> listPurchase = purchaseIdRepository.findAll();
         return listPurchase.stream()
-                .map(PurchaseDTO::toDTO)
+                .map(PurchaseSummaryDTO::toDTO)
                 .toList();
     }
 
